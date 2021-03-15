@@ -48,14 +48,14 @@ def saveAndNext():
             result = request.get_json()
             db.session.query(LabelDatum).filter(
                 LabelDatum.abstract == str(result['abstract'])
-            ).update({LabelDatum.abstract_label: str(result['abstract_label'])})
+            ).update({LabelDatum.abstract_label: str(result['abstract_label']),LabelDatum.label_flag: 'labeled'})
             labelData = (
                 db.session.query(LabelDatum)
                 .filter_by(abstract_label=None, label_flag=None)
                 .first()
             )
             db.session.query(LabelDatum).filter_by(abstract=labelData.abstract).update(
-                {LabelDatum.label_flag: 'labeled'}
+                {LabelDatum.label_flag: 'labeling'}
             )
             db.session.commit()
             return jsonify({'abstract': labelData.abstract})
@@ -108,5 +108,5 @@ if __name__ == "__main__":
     logger.info("Logging configuration done")
     dapp = DebuggedApplication(app, evalex=True)
     http_server = WSGIServer(('0.0.0.0', 5000), app, log=logger)
-    print('======>>> App running at Local:   http://localhost:8080/<<<======')
+    print('======>>> App running at Local:   http://localhost:5000/<<<======')
     http_server.serve_forever()
