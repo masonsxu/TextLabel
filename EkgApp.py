@@ -25,24 +25,58 @@ def index():
 @app.route('/api/get_text', methods=['GET'])
 def get_text():
     if request.method == 'GET':
-        labelDatum = (
-            db.session.query(LabelDatum).filter_by(abstract_label=None).first_or_404()
-        )
-        return jsonify({'abstract': labelDatum.abstract})
+        try:
+            labelData = (
+                db.session.query(LabelDatum)
+                .filter_by(abstract_label=None, label_flag=None)
+                .first()
+            )
+            db.session.query(LabelDatum).filter_by(abstract=labelData.abstract).update(
+                {LabelDatum.label_flag: 'labeling'}
+            )
+            db.session.commit()
+            return jsonify({'abstract': labelData.abstract})
+        except Exception:
+            db.session.rollback()
+            return jsonify({'abstract': None})
 
 
 @app.route('/api/saveAndNext', methods=['POST'])
 def saveAndNext():
     if request.method == 'POST':
+        try:
+            result = request.get_json()
+            db.session.query(LabelDatum).filter(
+                LabelDatum.abstract == str(result['abstract'])
+            ).update({LabelDatum.abstract_label: str(result['abstract_label'])})
+            labelData = (
+                db.session.query(LabelDatum)
+                .filter_by(abstract_label=None, label_flag=None)
+                .first()
+            )
+            db.session.query(LabelDatum).filter_by(abstract=labelData.abstract).update(
+                {LabelDatum.label_flag: 'labeled'}
+            )
+            db.session.commit()
+            return jsonify({'abstract': labelData.abstract})
+        except Exception:
+            db.session.rollback()
+            return jsonify({'abstract': None})
+
+
+@app.route('/api/reset_label_flag', methods=['POST'])
+def reset_label_flag():
+    if request.method == 'POST':
         result = request.get_json()
-        db.session.query(LabelDatum).filter(
-            LabelDatum.abstract == str(result['abstract'])
-        ).update({LabelDatum.abstract_label: str(result['abstract_label'])})
-        db.session.commit()
-        labelDatum = (
-            db.session.query(LabelDatum).filter_by(abstract_label=None).first_or_404()
-        )
-        return jsonify({'abstract': labelDatum.abstract})
+        try:
+            db.session.query(LabelDatum).filter(
+                LabelDatum.abstract == str(result['abstract'])
+            ).update({LabelDatum.label_flag: None})
+            db.session.commit()
+            return jsonify({'abstract': None})
+        except Exception:
+            db.session.rollback()
+            return jsonify({'abstract': None})
 
 
 @app.errorhandler(Exception)
@@ -60,15 +94,19 @@ if __name__ == "__main__":
     %(message)s 这项即调用如app.logger.info(‘info log’)中的参数，即message
     """
     from werkzeug.debug import DebuggedApplication
-    logger  = logging.getLogger( 'app' )
+
+    logger = logging.getLogger('app')
     logger.setLevel(10)
-    logger_format =logging.Formatter(
-        '%(asctime)s - %(levelname)s - %(filename)s - %(funcName)s - %(lineno)s - %(message)s')
-    logHandler = handlers.RotatingFileHandler('log/flask.log',maxBytes =1000000, backupCount=1)
+    logger_format = logging.Formatter(
+        '%(asctime)s - %(levelname)s - %(filename)s - %(funcName)s - %(lineno)s - %(message)s'
+    )
+    logHandler = handlers.RotatingFileHandler(
+        'log/flask.log', maxBytes=1000000, backupCount=1
+    )
     logHandler.setFormatter(logger_format)
     logger.addHandler(logHandler)
     logger.info("Logging configuration done")
-    dapp = DebuggedApplication( app, evalex= True)
-    http_server = WSGIServer(('0.0.0.0', 8080), app, log=logger)
+    dapp = DebuggedApplication(app, evalex=True)
+    http_server = WSGIServer(('0.0.0.0', 5000), app, log=logger)
     print('======>>> App running at Local:   http://localhost:8080/<<<======')
     http_server.serve_forever()
