@@ -8,7 +8,7 @@ db = SQLAlchemy()
 class LabelDatum(db.Model):
     __tablename__ = 'labelData'
 
-    media_id = db.Column(db.Integer, primary_key=True)
+    media_id = db.Column(db.Integer, primary_key=True,info='序号')
     abstract = db.Column(db.String, info='摘要')
     abstract_label = db.Column(db.String, info='标注后的摘要')
 
