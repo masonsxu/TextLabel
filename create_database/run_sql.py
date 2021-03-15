@@ -29,14 +29,22 @@ def get_config():
 def create_connection():
     return create_engine(get_config())
 
+
 def connect_mysql():
     cp = ConfigParser()
     cp.read('config/config.cfg')
     try:
-        conn = pymysql.connect(host=cp.get('mysql', 'host'),user=cp.get('mysql', 'username'),password=cp.get('mysql', 'password'),db=cp.get('mysql', 'database'),charset='utf8')
+        conn = pymysql.connect(
+            host=cp.get('mysql', 'host'),
+            user=cp.get('mysql', 'username'),
+            password=cp.get('mysql', 'password'),
+            db=cp.get('mysql', 'database'),
+            charset='utf8',
+        )
         return conn
     except pymysql.err.OperationalError as e:
-        print('Error is '+str(e))
+        print('Error is ' + str(e))
+
 
 def run_sqlite():
     try:
