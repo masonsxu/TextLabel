@@ -127,3 +127,12 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# Vscode Setting
+.vscode/
+.DS_Store
+
+# temp
+data/
+model_pre/
+service/
