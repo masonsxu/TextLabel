@@ -11,7 +11,7 @@
  Target Server Version : 80022
  File Encoding         : 65001
 
- Date: 08/02/2021 19:33:11
+ Date: 16/03/2021 15:29:11
 */
 
 SET NAMES utf8mb4;
@@ -23,7 +23,7 @@ SET FOREIGN_KEY_CHECKS = 0;
 DROP TABLE IF EXISTS `textLabel`;
 CREATE TABLE `textLabel` (
   `media_id` int NOT NULL AUTO_INCREMENT COMMENT '新闻序号',
-  `media_type` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '媒体类型',
+  `media_type` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci COMMENT '媒体类型',
   `media_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '媒体名称',
   `title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '标题',
   `abstract` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci COMMENT '摘要',
@@ -36,7 +36,9 @@ CREATE TABLE `textLabel` (
   `emotional_attribute` varchar(4) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '情感属性',
   `emotional_score` int DEFAULT NULL COMMENT '情感分值',
   `mention_region` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '提及地域',
-  `release_time` varchar(255) DEFAULT NULL COMMENT '发布时间',
+  `release_time` datetime DEFAULT NULL COMMENT '发布详细时间',
+  `release_date` datetime DEFAULT NULL COMMENT '发布日期',
+  `release_time_hmm` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '发布时间',
   `micro_Number_of_blog_fans` int DEFAULT NULL COMMENT '微博粉丝数',
   `number_of_reads` int DEFAULT NULL COMMENT '阅读数',
   `number_of_likes` int DEFAULT NULL COMMENT '点赞数',
@@ -44,6 +46,6 @@ CREATE TABLE `textLabel` (
   `number_of_comments` int DEFAULT NULL COMMENT '评论数',
   `number_of_reposts` int DEFAULT NULL COMMENT '转发数',
   PRIMARY KEY (`media_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 SET FOREIGN_KEY_CHECKS = 1;
