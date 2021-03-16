@@ -18,12 +18,18 @@ def get_data(folderpath_origin):
             df = pd.read_csv(path, sep=',', encoding='utf8', skiprows=1)
             for row_data in df.values.tolist():
                 new_row = []
-                for columns_data in row_data[1:]:
-                    new_row.append(
-                        html.unescape(html.unescape((str(columns_data))))
-                        .translate(trans)
-                        .replace('--', '0')
-                    )
+                for index, columns_data in enumerate(row_data[1:]):
+                    if index == 13:
+                        new_row.append(str(columns_data))
+                        release_time = str(columns_data).split()
+                        new_row.append(str(release_time[0]))
+                        new_row.append(str(release_time[1]))
+                    else:
+                        new_row.append(
+                            html.unescape(html.unescape((str(columns_data))))
+                            .translate(trans)
+                            .replace('--', '0')
+                        )
                 merged_data_list.append(new_row)
 
         else:
@@ -57,6 +63,8 @@ def save_data_sql(folderpath_origin):
                     'emotional_score',
                     'mention_region',
                     'release_time',
+                    'release_date',
+                    'release_time_hmm',
                     'micro_Number_of_blog_fans',
                     'number_of_reads',
                     'number_of_likes',
