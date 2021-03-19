@@ -9,9 +9,14 @@ from flask import Flask, render_template, request, jsonify
 app = Flask(__name__)
 app.config['JSON_AS_ASCII'] = False
 app.config['TEMPLATES_AUTO_RELOAD'] = True
+# 本地部署
+# app.config[
+#     'SQLALCHEMY_DATABASE_URI'
+# ] = 'mysql+pymysql://root:12345678@localhost:3306/TextLabel_schema'
+# 云服务器部署 lft
 app.config[
     'SQLALCHEMY_DATABASE_URI'
-] = 'mysql+pymysql://root:12345678@localhost:3306/TextLabel_schema'
+] = 'mysql+pymysql://root:123456@localhost:3306/TextLabel_schema'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 
 db = SQLAlchemy(app)
