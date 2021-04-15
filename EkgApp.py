@@ -10,13 +10,13 @@ app = Flask(__name__)
 app.config['JSON_AS_ASCII'] = False
 app.config['TEMPLATES_AUTO_RELOAD'] = True
 # 本地部署
-# app.config[
-#     'SQLALCHEMY_DATABASE_URI'
-# ] = 'mysql+pymysql://root:12345678@localhost:3306/TextLabel_schema'
-# 云服务器部署 lft
 app.config[
     'SQLALCHEMY_DATABASE_URI'
-] = 'mysql+pymysql://root:123456@localhost:3306/TextLabel_schema'
+] = 'mysql+pymysql://root:12345678@localhost:3306/TextLabel_schema'
+# 云服务器部署 lft
+# app.config[
+#     'SQLALCHEMY_DATABASE_URI'
+# ] = 'mysql+pymysql://root:123456@localhost:3306/TextLabel_schema'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 
 db = SQLAlchemy(app)
@@ -106,7 +106,7 @@ if __name__ == "__main__":
         '%(asctime)s - %(levelname)s - %(filename)s - %(funcName)s - %(lineno)s - %(message)s'
     )
     logHandler = handlers.RotatingFileHandler(
-        'log/flask.log', maxBytes=1000000, backupCount=1
+        'log/flask.log', maxBytes=1000000, backupCount=1, encoding='utf-8'
     )
     logHandler.setFormatter(logger_format)
     logger.addHandler(logHandler)
