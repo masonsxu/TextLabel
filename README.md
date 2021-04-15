@@ -1,6 +1,15 @@
 # TextLabel——数据标注系统
 一款数据标注工具（仿照百度在线标注平台）
 
+## 更新
+
+> 4/15/2021
+
+1. 增加`SPO`标注功能（用于三元组抽取）；
+2. 增加了`BIO`标注数据的显示表格，标签选中状态显示；
+3. 屏蔽整个页面的默认右键点击功能；
+4. 添加`SPO`标注取消功能。
+
 ## 数据标注界面
 
 数据标注界面主要分为4个板块：
@@ -21,9 +30,14 @@
 4. 数据标注的工作区：
 
    1. 显示被读取的文本数据；
-   2. 按住鼠标左键选中文本，在弹出的标记中选中应该被标注的标记
+   2. 按住鼠标左键选中文本，在弹出的标记中选中应该被标注的标记。
 
-   
+
+>4/15/2021
+
+![image-20210415094205914](https://gitee.com/MasonsXu/cloudimg/raw/master/img/image-20210415094205914.png)
+
+> 3/19/2021
 
 ![image-20210317172225122](https://gitee.com/MasonsXu/cloudimg/raw/master/img/image-20210317172225122.png)
 
@@ -69,3 +83,8 @@ TextLabel
 
 
 ## ⚠️程序不能直接运行，相应的后端数据库文件没有上穿（未完待续）
+
+## 项目开源地址
+
+后端代码+前端Vue打包后的代码： [TextLabel——数据标注系统](https://github.com/masonsxu/TextLabel)
+前端Vue源码：[text_label](https://github.com/masonsxu/text_label)
