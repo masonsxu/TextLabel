@@ -53,7 +53,7 @@ def saveAndNext():
             result = request.get_json()
             db.session.query(LabelDatum).filter(
                 LabelDatum.abstract == str(result['abstract'])
-            ).update({LabelDatum.abstract_label: str(result['abstract_label']),LabelDatum.label_flag: 'labeled'})
+            ).update({LabelDatum.abstract_label: str(result['abstract_label']).replace("'","\""),LabelDatum.label_flag: 'labeled'})
             labelData = (
                 db.session.query(LabelDatum)
                 .filter_by(abstract_label=None, label_flag=None)
