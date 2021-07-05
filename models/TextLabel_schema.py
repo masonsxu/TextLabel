@@ -1,4 +1,5 @@
 # coding: utf-8
+# 使用自动配置脚本生成的 flask_sqlalchemy models文件
 from flask_sqlalchemy import SQLAlchemy
 
 

@@ -24,11 +24,15 @@ db = SQLAlchemy(app)
 
 @app.route('/')
 def index():
+    """默认页面
+    """
     return render_template('index.html')
 
 
 @app.route('/api/get_text', methods=['GET'])
 def get_text():
+    """读取未标注数据，并更新状态信息为正在标注(labeling)
+    """
     if request.method == 'GET':
         try:
             labelData = (
@@ -48,12 +52,23 @@ def get_text():
 
 @app.route('/api/saveAndNext', methods=['POST'])
 def saveAndNext():
+    """保存已标注数据，更新状态信息为已标注(labeled);
+    
+    重新读取一条新的未标注数据，并更新状态信息为正在标注(labeling)
+    """
     if request.method == 'POST':
         try:
             result = request.get_json()
             db.session.query(LabelDatum).filter(
                 LabelDatum.abstract == str(result['abstract'])
-            ).update({LabelDatum.abstract_label: str(result['abstract_label']).replace("'","\""),LabelDatum.label_flag: 'labeled'})
+            ).update(
+                {
+                    LabelDatum.abstract_label: str(result['abstract_label']).replace(
+                        "'", "\""
+                    ),
+                    LabelDatum.label_flag: 'labeled',
+                }
+            )
             labelData = (
                 db.session.query(LabelDatum)
                 .filter_by(abstract_label=None, label_flag=None)
@@ -71,6 +86,8 @@ def saveAndNext():
 
 @app.route('/api/reset_label_flag', methods=['POST'])
 def reset_label_flag():
+    """取消当前正在标注的数据，并更新状态信息为为标注(None)
+    """
     if request.method == 'POST':
         result = request.get_json()
         try:
@@ -86,6 +103,8 @@ def reset_label_flag():
 
 @app.errorhandler(Exception)
 def handle_exception_error(e):
+    """捕捉所有错误信息，并返回至初始界面(index.html)
+    """
     return render_template('index.html')
 
 

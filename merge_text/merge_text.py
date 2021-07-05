@@ -6,6 +6,12 @@ from create_database import run_sql
 
 
 def get_data(folderpath_origin):
+    """读取CSV文件中的信息
+
+    Args:folderpath_origin(str):CSV文件所在的目录
+
+    Return:merged_data_list(list):读取所有CSV文件中的数据，所存放的变量
+    """
     filename = os.listdir(folderpath_origin)
     merged_data_list = []
     print('----------------开始合并所有文件中的数据----------------')
@@ -38,6 +44,10 @@ def get_data(folderpath_origin):
 
 
 def save_data_sql(folderpath_origin):
+    """将CSV中的所有数据保存到MySQL数据库中
+    
+    Args:folderpath_origin(str):CSV文件所在的目录
+    """
     merged_data_list = get_data(folderpath_origin)
     engine = run_sql.create_connection()
     with engine.connect() as conn:
