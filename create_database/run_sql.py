@@ -7,7 +7,8 @@ from configparser import ConfigParser
 def get_config():
     """获取配置文件中的配置参数
 
-    Return:mysql config string(str): 返回一串包含连接MySQL所需要的所有参数字符串
+    Return:
+        :mysql config string(str): 返回一串包含连接MySQL所需要的所有参数字符串
     """
     cp = ConfigParser()
     cp.read('config/config.cfg')
@@ -41,7 +42,8 @@ def create_connection():
 def connect_mysql():
     """连接MySQL
     
-    Return:成功连接MySQL的Connection对象（Connection）
+    Return:
+        :成功连接MySQL的Connection对象（Connection）
     """
     cp = ConfigParser()
     cp.read('config/config.cfg')
